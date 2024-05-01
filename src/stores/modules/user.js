@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import userGetInfoService from '@/api/user.js'
+import { userGetInfoService } from '@/api/user.js'
 
 // token setToken removeToken
 export const useUserStore = defineStore(
