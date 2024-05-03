@@ -5,7 +5,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-const isRegister = ref(true)
+const isRegister = ref(false)
 const form = ref()
 const formModel = ref({
   username: '',
@@ -91,7 +91,7 @@ watch(isRegister, () => {
             :prefix-icon="User"
             placeholder="请输入用户名"
             v-model="formModel.username"
-            @click="register"
+            @keyup.enter="register"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -101,7 +101,7 @@ watch(isRegister, () => {
             placeholder="请输入密码"
             v-model="formModel.password"
             show-password
-            @click="register"
+            @keyup.enter="register"
           ></el-input>
         </el-form-item>
         <el-form-item prop="repassword">
@@ -110,7 +110,7 @@ watch(isRegister, () => {
             type="password"
             placeholder="请输入再次密码"
             v-model="formModel.repassword"
-            @click="register"
+            @keyup.enter="register"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -145,7 +145,7 @@ watch(isRegister, () => {
             :prefix-icon="User"
             placeholder="请输入用户名"
             v-model="formModel.username"
-            @click="login"
+            @keyup.enter="login"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -155,7 +155,7 @@ watch(isRegister, () => {
             type="password"
             placeholder="请输入密码"
             v-model="formModel.password"
-            @click="login"
+            @keyup.enter="login"
           ></el-input>
         </el-form-item>
         <el-form-item class="flex">
