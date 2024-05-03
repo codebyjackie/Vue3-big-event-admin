@@ -69,7 +69,7 @@ const onSuccess = () => {
         </template>
       </el-table-column>
       <template #empty>
-        <el-empty description="没有数据"></el-empty>
+        <el-empty description="暂无数据"></el-empty>
       </template>
     </el-table>
     <channel-edit ref="dialog" @success="onSuccess"></channel-edit>
