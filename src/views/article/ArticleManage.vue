@@ -2,8 +2,9 @@
 import { ref } from 'vue'
 import { Link, Edit, Delete } from '@element-plus/icons-vue'
 import ChannelSelect from './components/ChannelSelect.vue'
-import { articleGetListService } from '@/api/article'
+import { articleDeleteService, articleGetListService } from '@/api/article'
 import { formatTime } from '@/utils/format.js'
+import ArticleEdit from './components/ArticleEdit.vue'
 
 const articleList = ref([])
 const total = ref(0)
@@ -23,12 +24,22 @@ const getArticleList = async () => {
   loading.value = false
 }
 getArticleList()
-const onEditArticle = (row) => {
-  console.log(row)
+const articleEditRef = ref()
+const onAddArticle = () => {
+  articleEditRef.value.open({})
 }
-
-const onDeleteArticle = (row) => {
-  console.log(row)
+const onEditArticle = (row) => {
+  articleEditRef.value.open(row)
+}
+const onDeleteArticle = async (row) => {
+  await ElMessageBox.confirm('你确认删除该文章信息吗？', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  await articleDeleteService(row.id)
+  ElMessage({ type: 'success', message: '删除成功' })
+  getArticleList()
 }
 
 const onSizeChange = (size) => {
@@ -51,17 +62,26 @@ const onReset = () => {
   params.value.state = ''
   getArticleList()
 }
+
+const onSuccess = (type) => {
+  if (type === 'add') {
+    // 如果是添加，需要跳转渲染最后一页，编辑直接渲染当前页
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
+  getArticleList()
+}
 </script>
 
 <template>
   <page-container title="文章管理">
     <template #extra>
-      <el-button type="primary">添加文章</el-button>
+      <el-button type="primary" @click="onAddArticle">添加文章</el-button>
     </template>
     <!-- 表单区域 -->
     <el-form inline>
       <el-form-item label="文章分类：">
-        <channel-select v-model="params.cate_id"></channel-select>
+        <channel-select v-model="params.cate_id" width="200px"></channel-select>
       </el-form-item>
       <el-form-item label="发布状态：">
         <el-select style="width: 200px" v-model="params.state">
@@ -122,6 +142,7 @@ const onReset = () => {
       @current-change="onCurrentChange"
       style="margin-top: 20px; justify-content: flex-end"
     />
+    <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
   </page-container>
 </template>
 

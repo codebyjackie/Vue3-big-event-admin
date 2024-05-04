@@ -19,3 +19,14 @@ export const articleGetListService = (params) =>
   request.get('/my/article/list', {
     params
   })
+
+export const articlePublishService = (data) =>
+  request.post('/my/article/add', data)
+
+export const articleGetDetailService = (id) =>
+  request.get('my/article/info', { params: { id } })
+
+export const articleEditService = (data) => request.put('my/article/info', data)
+
+export const articleDeleteService = (id) =>
+  request.delete('my/article/info', { params: { id } })
